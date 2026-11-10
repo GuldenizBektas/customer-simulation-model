@@ -149,5 +149,3 @@ Simulation for Agentic Tasks*, COLM 2026 (arXiv:2603.11245), and ABCD
 ## License
 
 MIT (code). Data and models keep their own licenses.
-# customer-simulation-model
-# customer-simulation-model
