@@ -1,0 +1,10 @@
+# ABCD -> customer-side SFT data (python -m usersim.prepare_data)
+abcd_path: data/raw/abcd_v1.1.json   # download from github.com/asappresearch/abcd (not in git)
+out_dir: data/processed
+action_mode: drop        # drop | note  (agent tool calls removed, or kept as "[action] ..." text)
+mask_pii: false          # ABCD identities are synthetic; set true for real-customer data (R6)
+group_by: subflow        # subflow | flow | scenario | convo  -- split unit, prevents leakage (R4)
+dev_ratio: 0.10
+test_ratio: 0.15
+seed: 13
+max_conversations: null  # e.g. 200 for a quick local check

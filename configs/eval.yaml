@@ -1,0 +1,15 @@
+# Evaluation (python -m usersim.evaluate)
+human_file: data/processed/test.jsonl     # held-out human ABCD conversations
+train_file: data/processed/train.jsonl    # for the leakage check
+run_dirs: [outputs/runs/smoke]
+out_dir: outputs/eval
+tau_usi_file: null       # data/raw/tau_bench_tasks_unified.json (EVALUATION ONLY)
+good_agent: good
+baseline_simulator: prompted_basic        # B1, reference for H5
+human_reference_success: null             # TODO: human agent success rate (e.g. tau-usi reward mean)
+goal_keeping_min: 0.5    # success is also reported on goal-keeping conversations only (R1)
+h5_max_adherence_drop: 0.10
+leakage_ngram: 8
+ceiling_splits: 20
+bootstrap: 1000
+seed: 13

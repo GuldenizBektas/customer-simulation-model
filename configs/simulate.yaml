@@ -1,0 +1,43 @@
+# Simulated conversations (python -m usersim.simulate)
+run_id: smoke
+out_root: outputs/runs
+scenarios_file: data/processed/test.jsonl   # held-out scenarios (unseen intents)
+n_scenarios: 20          # >=150 for the main run
+seeds: [0, 1, 2]
+seed: 13                 # scenario sampling
+max_turns: 20            # max customer turns per conversation
+kb_path: data/raw/kb.json  # ABCD policy for the agent
+
+backends:
+  qwen4b:                # simulator baselines B1/B2
+    type: ollama
+    model: qwen3:4b-instruct-2507-q4_K_M
+    temperature: 0.7
+  qwen4b_agent:          # the agent under test (fixed); lower temperature
+    type: ollama
+    model: qwen3:4b-instruct-2507-q4_K_M
+    temperature: 0.2
+  ft:                    # our GGUF imported into Ollama (see README)
+    type: ollama
+    model: usersim-qwen3-4b
+    temperature: 0.7
+  # larger:              # B3, Kaggle
+  #   type: vllm
+  #   model: Qwen/Qwen3-14B-AWQ   # TODO(verify)
+
+simulators:
+  ft:                 {class: ft, backend: ft, enabled: false}   # enable after day 9
+  prompted_basic:     {class: prompted, style: basic, backend: qwen4b}
+  prompted_realistic: {class: prompted, style: realistic, backend: qwen4b}
+  larger:             {class: prompted, style: basic, backend: larger, enabled: false}
+  userlm:             {class: userlm, backend: userlm, enabled: false}
+
+agents:
+  good:                     {class: good, backend: qwen4b_agent}
+  broken_looping:           {class: broken_looping, backend: qwen4b_agent}
+  broken_wrong_policy:      {class: broken_wrong_policy, backend: qwen4b_agent, enabled: false}
+  broken_premature_resolve: {class: broken_premature_resolve, backend: qwen4b_agent, enabled: false}
+  broken_over_asking:       {class: broken_over_asking, backend: qwen4b_agent, enabled: false}
+  broken_polite_useless:    {class: broken_polite_useless, backend: qwen4b_agent, enabled: false}
+  rule_good:                {class: rule, enabled: false}             # no LLM (R8)
+  rule_loop:                {class: rule, fault: loop, enabled: false}

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "usersim"
+version = "0.1.0"
+description = "Fine-tuned customer simulators for evaluating support agents"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+# Light dependencies: data prep, simulation via local Ollama, metrics, evaluation.
+dependencies = [
+    "numpy",
+    "scipy",
+    "pandas",
+    "pyyaml",
+    "ollama",
+]
+
+[project.optional-dependencies]
+# GPU-only (Kaggle). Do not install on a Mac.
+train = ["unsloth", "trl", "transformers", "datasets", "peft"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

@@ -1,0 +1,26 @@
+# QLoRA SFT on Kaggle T4 (python -m usersim.train)
+model_name: unsloth/Qwen3-4B-Instruct-2507   # TODO(verify) exact Unsloth repo name on HF
+chat_template: qwen3-instruct                # unsloth.chat_templates name, TODO(verify)
+load_in_4bit: true
+max_seq_len: 2048        # TODO: set from token-length stats of train.jsonl (day 3)
+lora:
+  r: 16
+  alpha: 16
+  dropout: 0.0
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+lr: 2.0e-4
+epochs: 1
+batch_size: 2
+grad_accum: 8
+warmup_ratio: 0.03
+eval_steps: 100
+save_steps: 200
+seed: 13
+train_file: data/processed/train.jsonl
+dev_file: data/processed/dev.jsonl
+max_examples: null       # 500 for the pipeline smoke test (day 6)
+max_eval_examples: 200
+output_dir: outputs/train/qwen3-4b-usersim
+export_gguf: false
+gguf_quant: q4_k_m
+hub_repo: null           # e.g. <hf-user>/qwen3-4b-customer-sim (private until release)
